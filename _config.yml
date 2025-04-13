@@ -1,7 +1,7 @@
-title: ArthurChiao's Blog
-description: ArthurChiao's Blog
+title: Xiaoshae Blog
+description: Xiaoshae Blog
 
-url: https://arthurchiao.github.io
+url: https://xiaoshae.github.io
 paginate_path: "blog/page:num/"
 permalink: blog/:title/
 
@@ -25,10 +25,10 @@ navigation:
    url: /donate
 
 social:
-   github: ArthurChiao
-   linkedin: in/yanan-zhao-7691317b?trk=hp-identity-photo
-   facebook: profile.php?id=100014334455077
-   email: arthurchiao@hotmail.com
+   github: xiaoshae
+   # linkedin: in/yanan-zhao-7691317b?trk=hp-identity-photo
+   # facebook: profile.php?id=100014334455077
+   # email: arthurchiao@hotmail.com
 
 defaults:
   -
@@ -38,7 +38,7 @@ defaults:
     values:
       comments: false
 
-google_analytics: "G-5SFP2TKSL7"
+# google_analytics: "G-5SFP2TKSL7"
 
 # development configurations
 host: 0.0.0.0
