@@ -65,7 +65,7 @@ ip link set eth0 up
 ip route add default via 172.17.0.1 dev eth0
 ```
 
-
+<br>
 
 查看 **docker** 网络命名空间中的接口状况
 
@@ -103,6 +103,7 @@ root@localhost:~# ip netns exec docker ip a
 ```
 
 
+<br>
 
 查看 **nginx** 网络命名空间中的接口状况
 
@@ -122,7 +123,7 @@ root@localhost:~# ip netns exec nginx ip a
        valid_lft forever preferred_lft forever
 ```
 
-
+<br>
 
 查看 **gitlab** 网络命名空间中的接口状况
 
@@ -142,7 +143,7 @@ root@localhost:~# ip netns exec gitlab ip a
        valid_lft forever preferred_lft forever
 ```
 
-
+<br>
 
 **验证网络连通性**：测试 **docker0 网桥** 与 **nginx 的 eth0**、**gitlab 的 eth0** 之间的通信是否正常。
 
@@ -168,7 +169,7 @@ PING 172.17.10.20 (172.17.10.20) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.068/0.075/0.083/0.007 ms
 ```
 
-
+<br>
 
 **验证网络连通性**：测试 **nginx 的 eth0** 与 **docker0 网桥**、**gitlab 的 eth0** 之间的通信是否正常。
 
@@ -194,7 +195,7 @@ PING 172.17.10.20 (172.17.10.20) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.030/0.039/0.048/0.009 ms
 ```
 
-
+<br>
 
 **验证网络连通性**：测试 **gitlab 的 eth0** 与 **docker0 网桥**、**nginx 的 eth0** 之间的通信是否正常。
 
@@ -220,7 +221,7 @@ PING 172.17.10.10 (172.17.10.10) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.038/0.061/0.085/0.023 ms
 ```
 
-
+<br>
 
 **检查 Docker 网络命名空间**：查看 **iptables filter 表** 中 **FORWARD 链** 的默认规则配置。
 
@@ -242,7 +243,7 @@ target     prot opt source               destination
 iptables -P FORWARD ACCEPT
 ```
 
-
+<br>
 
 虽然流量可以正常转发，但**源 IP 仍为 172.17.x.x（Docker 内部网络）**，导致外部网络无法正确响应。此时需要配置 **NAT（地址转换）** 以修正源 IP。
 
@@ -256,7 +257,7 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 
 ![image-20250416082618202](/assets/img/linux-advanced-networking/image-20250416082618202.png)
 
-
+<br>
 
 **配置 NAT 规则**：为 **172.17.0.0/16 网段** 启用 NAT，确保 **Nginx 和 GitLab 容器** 的网络命名空间能够正常访问外部网络。
 
@@ -264,7 +265,7 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
 ```
 
-
+<br>
 
 **网络连通性测试**：验证 **Nginx 网络命名空间** 与 **外部网络** 的通信是否正常。
 
@@ -281,7 +282,7 @@ rtt min/avg/max/mdev = 121.506/131.977/142.448/10.471 ms
 
 ![image-20250416082809914](/assets/img/linux-advanced-networking/image-20250416082809914.png)
 
-
+<br>
 
 **网络连通性测试**：验证 **Gitlab 网络命名空间** 与 **外部网络** 的通信是否正常。
 
@@ -298,7 +299,7 @@ rtt min/avg/max/mdev = 174.149/215.368/256.588/41.219 ms
 
 ![image-20250416082902737](/assets/img/linux-advanced-networking/image-20250416082902737.png)
 
-
+<br>
 
 **配置 DNAT 端口转发规则**
 
@@ -310,7 +311,7 @@ iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 172.1
 iptables -t nat -A PREROUTING -p tcp --dport 9090 -j DNAT --to-destination 172.17.10.20:80
 ```
 
-
+<br>
 
 在 **Nginx** 和 **GitLab** 的网络命名空间中启动 **80 端口** 的 Web 服务
 
@@ -337,13 +338,13 @@ root@localhost:~# ip netns exec gitlab python3 -m http.server 80 --bind 0.0.0.0 
 Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 ```
 
-
+<br>
 
 从外部网络通过浏览器访问 **192.168.54.230:8080**（对应 Nginx）
 
 ![image-20250416084733925](/assets/img/linux-advanced-networking/image-20250416084733925.png)
 
-
+<br>
 
 从外部网络通过浏览器访问 **192.168.54.230:9090**（对应 GitLab）
 
