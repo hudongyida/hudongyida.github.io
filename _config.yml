@@ -1,7 +1,7 @@
 title: Xiaoshae Blog
 description: Xiaoshae Blog
 
-url: https://xiaoshae.github.io
+url: https://xiaoshae.cn
 paginate_path: "blog/page:num/"
 permalink: blog/:title/
 
