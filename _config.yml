@@ -13,15 +13,13 @@ paginate: 10
 navigation:
  - title: Home
    url: /index.html
- - title: Articles (EN)
-   url: /articles
- - title: Articles (中文)
+ - title: 文章
    url: /articles-zh
- - title: Categories
+ - title: 类别
    url: /categories
- - title: About
+ - title: 关于
    url: /about
- - title: Donate
+ - title: 捐赠
    url: /donate
 
 social:
