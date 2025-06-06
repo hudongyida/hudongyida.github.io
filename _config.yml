@@ -1,7 +1,7 @@
-title: Xiaoshae Blog
-description: Xiaoshae Blog
+title: hudong の Blog
+description: hudong  の Blog
 
-url: https://xiaoshae.cn
+url: https://hudongyida.github.io/
 paginate_path: "blog/page:num/"
 permalink: blog/:title/
 
@@ -25,7 +25,7 @@ navigation:
    url: /donate
 
 social:
-   github: xiaoshae
+   github: hudongyida
    # linkedin: in/yanan-zhao-7691317b?trk=hp-identity-photo
    # facebook: profile.php?id=100014334455077
    # email: arthurchiao@hotmail.com
