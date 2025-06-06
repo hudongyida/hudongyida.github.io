@@ -53,8 +53,8 @@ kubectl delete crd thanosrulers.monitoring.coreos.com
 ```
 
 ## Web访问【在实验环境中】
-由于Helm部署使用的是Cluster IP 类型，只能在集群内相互访问，如果要实现对外的访问则需要使用其他手段，比如Nginx ingress,下面为了演示效果使用NodePort的方式进行暴露
-使用命令查看svc,
+由于Helm部署使用的是Cluster IP 类型，只能在集群内相互访问，如果要实现对外的访问则需要使用其他手段，比如Nginx ingress,下面为了演示效果使用NodePort的方式进行暴露  
+使用命令查看svc
 ```sh
 [root@master-01 linux-amd64]# kubectl get svc -n monitoring 
 NAME                                                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
@@ -62,7 +62,7 @@ alertmanager-operated                                       ClusterIP   None    
 kube-prometheus-stack-1749-alertmanager                     ClusterIP   10.68.96.212    <none>        9093/TCP,8080/TCP            24m
 kube-prometheus-stack-1749-operator                         ClusterIP   10.68.221.167   <none>        443/TCP                      24m
 kube-prometheus-stack-1749-prometheus                       ClusterIP   10.68.254.233   <none>        9090/TCP,8080/TCP            24m
-kube-prometheus-stack-1749200426-grafana                    ClusterIP   10.68.191.93    <none>        80/TCP                       24m #修改
+kube-prometheus-stack-1749200426-grafana                    ClusterIP   10.68.191.93    <none>        80/TCP                       24m #需要修改
 kube-prometheus-stack-1749200426-kube-state-metrics         ClusterIP   10.68.33.94     <none>        8080/TCP                     24m
 kube-prometheus-stack-1749200426-prometheus-node-exporter   ClusterIP   10.68.125.1     <none>        9100/TCP                     24m
 prometheus-operated                                         ClusterIP   None            <none>        9090/TCP                     24m
@@ -111,7 +111,7 @@ spec:
 status:
   loadBalancer: {}
 ```
-在浏览器中输入 计算节点的IP地址:30003访问grafana
+在浏览器中输入 计算节点的IP地址:30003访问grafana  
 使用下面命令获取账户密码
 ```sh
 # 查看grafana秘钥文件
