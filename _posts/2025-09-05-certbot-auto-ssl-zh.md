@@ -51,7 +51,7 @@ chmod 600 /etc/letsencrypt/cloudflare.ini
 ### 阿里云
 下面内容并非原创，原帖转自[github](https://github.com/tengattack/certbot-dns-aliyun)并且使用翻译软件进行了简单的汉化
 1. 获取阿里云的RMA AK SK 并且RMA需要有AliyunDNSFullAccess权限
-2. 安装
+2. 安装  
 ```shell
 #对于使用PIP
 pip install certbot-dns-aliyun
