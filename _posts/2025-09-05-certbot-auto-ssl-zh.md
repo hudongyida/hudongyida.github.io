@@ -2,7 +2,7 @@
 layout    : post
 title     : "使用certbot实现ssl证书的自动签发"
 date      : 2025-09-04
-lastupdate: 2025-09-04
+lastupdate: 2025-09-05
 categories: Linux project
 ---
 # 使用使用certbot+Let's Encrypt实现ssl证书的自动签发
@@ -52,23 +52,25 @@ chmod 600 /etc/letsencrypt/cloudflare.ini
 下面内容并非原创，原帖转自[github](https://github.com/tengattack/certbot-dns-aliyun)并且使用翻译软件进行了简单的汉化
 1. 获取阿里云的RMA AK SK 并且RMA需要有AliyunDNSFullAccess权限
 2. 安装  
+- 对于使用PIP
 ```shell
-\#对于使用PIP
 pip install certbot-dns-aliyun
-
-\# 对于快照
+```
+- 对于快照
+```shell
 sudo snap install certbot-dns-aliyun
 sudo snap set certbot trust-plugin-with-root=ok
 sudo snap connect certbot:plugin certbot-dns-aliyun
 /snap/bin/certbot plugins
-
-\# 手动安装
+```
+- 手动安装
+```shell
 git clone https://github.com/tengattack/certbot-dns-aliyun
 cd certbot-dns-aliyun
 sudo python setup.py install
-
-\# 如果您使用的是 certbot-auto，则应先运行 virtualenv
-\# CentOS 7
+```
+- 如果您使用的是 certbot-auto，则应先运行 virtualenv【CentOS 7】
+```shell
 virtualenv --no-site-packages --python "python2.7" "/opt/eff.org/certbot/venv"
 /opt/eff.org/certbot/venv/bin/python2.7 setup.py install
 ```
@@ -109,10 +111,9 @@ certbot certonly \
   -a dns-tencentcloud \
   --dns-tencentcloud-credentials ~/.secrets/certbot/tencentcloud.ini \  
   -d example.com
-
-#-a dns-tencentcloud此为必要参数，-a或--authenticator均可，若缺少参数插件将无法使用
-#dns-tencentcloud-credentials用于指定秘钥凭据文件位置
 ```
+其中`-a` `dns-tencentcloud`此为必要参数，`-a`或`--authenticator`均可，若缺少参数插件将无法使用，`dns-tencentcloud-credentials`用于指定秘钥凭据文件位置。  
+  
 在变量环境中使用此插件
 ```shell
 export TENCENTCLOUD_SECRET_ID=<your_secret_id> TENCENTCLOUD_SECRET_KEY=<your_secret_key>
@@ -130,10 +131,10 @@ import os
 import shutil
 from datetime import datetime
 
-# Configuration (修改配置请在此区域)
-DOMAIN = "XXX.com"          #域名
-EMAIL = "XXX@XX.com"        #邮箱设置
-DNS_CREDENTIALS = "/etc/letsencrypt/dns_credentials.ini"  # 统一的凭据文件路径
+"""Configuration (修改配置请在此区域)"""
+DOMAIN = "XXX.com"          """域名"""
+EMAIL = "XXX@XX.com"        """邮箱设置"""
+DNS_CREDENTIALS = "/etc/letsencrypt/dns_credentials.ini"  """统一的凭据文件路径"""
 NGINX_CONTAINER_NAME = "nginx"
 
 class ObtainCertificate:
@@ -152,7 +153,7 @@ class ObtainCertificate:
             '--domains', DOMAIN,
             '--domains', f'*.{DOMAIN}',
             '--preferred-challenges', 'dns-01',
-            '--keep-until-expiring'  # Only renew when near expiration
+            '--keep-until-expiring'  """ Only renew when near expiration"""
         ]
         
         result = subprocess.run(command, capture_output=True, text=True)
@@ -265,13 +266,13 @@ class ReloadNginx:
 if __name__ == "__main__":
     print(f"\n[{datetime.now()}] [START] *****Certificate maintenance process*****")  
     
-    # 创建实例
+    """创建实例"""
     cert_obtainer = ObtainCertificate()
     nginx_reloader = ReloadNginx()
     
-    # 使用Cloudflare获取证书（可根据需要切换为aliyun()或tencentcloud()）
+    """使用Cloudflare获取证书（可根据需要切换为aliyun()或tencentcloud()）"""
     if cert_obtainer.cloudflare():
-        # 使用Docker重启容器中的Nginx（可根据需要切换为podman()或systemctl()）
+        """使用Docker重启容器中的Nginx（可根据需要切换为podman()或systemctl()）"""
         nginx_reloader.docker()
     
     print(f"[{datetime.now()}] [END] *****Process completed*****\n")
