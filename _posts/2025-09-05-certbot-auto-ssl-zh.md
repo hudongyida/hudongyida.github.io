@@ -53,22 +53,22 @@ chmod 600 /etc/letsencrypt/cloudflare.ini
 1. 获取阿里云的RMA AK SK 并且RMA需要有AliyunDNSFullAccess权限
 2. 安装  
 ```shell
-#对于使用PIP
+\#对于使用PIP
 pip install certbot-dns-aliyun
 
-# 对于快照
+\# 对于快照
 sudo snap install certbot-dns-aliyun
 sudo snap set certbot trust-plugin-with-root=ok
 sudo snap connect certbot:plugin certbot-dns-aliyun
 /snap/bin/certbot plugins
 
-# 手动安装
+\# 手动安装
 git clone https://github.com/tengattack/certbot-dns-aliyun
 cd certbot-dns-aliyun
 sudo python setup.py install
 
-# 如果您使用的是 certbot-auto，则应先运行 virtualenv
-# CentOS 7
+\# 如果您使用的是 certbot-auto，则应先运行 virtualenv
+\# CentOS 7
 virtualenv --no-site-packages --python "python2.7" "/opt/eff.org/certbot/venv"
 /opt/eff.org/certbot/venv/bin/python2.7 setup.py install
 ```
