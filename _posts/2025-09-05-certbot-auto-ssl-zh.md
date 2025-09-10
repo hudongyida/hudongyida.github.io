@@ -3,7 +3,7 @@ layout    : post
 title     : "使用certbot实现ssl证书的自动签发"
 date      : 2025-09-04
 lastupdate: 2025-09-05
-categories: Linux project
+categories: Linux-project
 ---
 # 使用使用certbot+Let's Encrypt实现ssl证书的自动签发
 ## 配置certbot
