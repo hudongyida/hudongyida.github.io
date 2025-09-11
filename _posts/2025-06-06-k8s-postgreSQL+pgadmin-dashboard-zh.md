@@ -89,11 +89,11 @@ spec:
     #请一定要先在work节点chmod 777 /var/postgreSQL_data
 chmod 777 /var/postgreSQL_data
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #很重要，不然可能会出权限问题，导致服务器起不来，别我怎么知道的
 kubectl apply -f pv-postgreslq.yaml
 ```  
@@ -225,11 +225,11 @@ spec:
     #请一定要先在work节点chmod 777 /var/pgadmin_data
 chmod 777 /var/pgadmin_data
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #一定要做，一定要做
-    #计算节点，不是控制解决。work节点，不是Master节点
+    #计算节点，不是控制节点。work节点，不是Master节点
     #很重要，不然可能会出权限问题，导致服务器起不来，别我怎么知道的
 kubectl apply -f pv-pgadmin.yaml
 ```
