@@ -1,6 +1,6 @@
 ---
 layout    : post
-title     : "helm部署kube-prometheus-stack"
+title     : "k8s部署postgreSQL+pgadmin"
 date      : 2025-09-11
 lastupdate: 2025-09-11
 categories: k8s
