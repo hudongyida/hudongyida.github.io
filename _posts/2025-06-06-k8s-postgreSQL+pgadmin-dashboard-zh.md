@@ -84,8 +84,17 @@ spec:
       #注意这里并没有使用storageClass:
       #如果要使用也请在values-1.yaml文件中编辑primary.persistence.storageClass
 ```  
-文件编辑好了后`kubectl apply -f`命令创建资源
+文件编辑好了后先`chmod`权限再`kubectl apply -f`命令创建资源
 ```shell
+    #请一定要先在work节点chmod 777 /var/postgreSQL_data
+chmod 777 /var/postgreSQL_data
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #很重要，不然可能会出权限问题，导致服务器起不来，别我怎么知道的
 kubectl apply -f pv-postgreslq.yaml
 ```  
 使用命令查看
@@ -211,8 +220,17 @@ spec:
       #注意这里并没有使用storageClass:
       #如果要使用也请在values-1.yaml文件中编辑persistentVolume.storageClass
 ```  
-创建资源
+先修改全程`chmod 777 /var/pgadmin_data`再创建资源
 ```shell
+    #请一定要先在work节点chmod 777 /var/pgadmin_data
+chmod 777 /var/pgadmin_data
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #一定要做，一定要做
+    #计算节点，不是控制解决。work节点，不是Master节点
+    #很重要，不然可能会出权限问题，导致服务器起不来，别我怎么知道的
 kubectl apply -f pv-pgadmin.yaml
 ```
 ### 部署
@@ -279,3 +297,6 @@ NAME                                READY   STATUS    RESTARTS   AGE    IP      
 pgadmin-pgadmin4-69c9849cf9-lxfb2   1/1     Running   0          97m    172.20.171.18   worker-01   <none>           <none>
 postgre-postgresql-0                1/1     Running   0          134m   172.20.171.20   worker-01   <none>           <none>
 ```
+
+
+2025-06-06-k8s-postgreSQL+pgadmin-dashboard-zh.md
