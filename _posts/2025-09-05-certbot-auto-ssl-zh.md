@@ -40,7 +40,14 @@ python3-certbot-dns-sakuracloud.noarch                                          
 dnf -y install python3-certbot-dns-cloudflare
 ```
 如果你使用的国内的DNS服务商可能没有直接包进行安装下面我会给使用阿里云和腾讯云的解决方案  
-获取Cloudflare的带有DNS权限的token，创建一个文件位于`/etc/letsencrypt/cloudflare.ini`,内容如下 `=`后面是token
+获取Cloudflare的带有DNS权限的token  
+![cloudflare-dashboard](/assets/img/certbot-auto-ssl/1cloudflare-dashboard.png)  
+![person-page](/assets/img/certbot-auto-ssl/2person-page.png)  
+![creat-API-token](/assets/img/certbot-auto-ssl/3creat-API-token.png)  
+![use-API-token-of-DNS](/assets/img/certbot-auto-ssl/4use-API-token-of-DNS.png)  
+![setting-token](/assets/img/certbot-auto-ssl/5setting-token.png)  
+![test-token](/assets/img/certbot-auto-ssl/6test-token.png)  
+创建一个文件位于`/etc/letsencrypt/cloudflare.ini`,内容如下 `=`后面是token
 ```
 dns_cloudflare_api_token = 1234567890abcdef1234567890abcdef
 ```
