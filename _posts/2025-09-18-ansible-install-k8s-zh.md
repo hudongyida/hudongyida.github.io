@@ -7,7 +7,7 @@ categories: k8s
 ---
 # 文章受众
 1. 0基础的小白，刚刚开始学Linux，又想搭建一个k8s集群玩玩，感受过程的【建议从环境搭建虚拟机开始看】，如果你想系统性的学习Linux可以留言我的免费专栏"红帽工程师带你从0开始学Linux"
-2. 有一定的Linux基础，想了解ansible部署k8s，和kubeasz开源项目的【建议直接跳转到 开始安装】
+2. 有一定的Linux基础，想了解ansible部署k8s，和kubeasz开源项目的【建议直接跳转到 开始安装】  
 # 使用ansible部署k8s
 
 Ansible 是一个极其流行的开源自动化工具，用于配置管理、应用部署、任务自动化和IT编排。它让你可以用简单的语言描述自动化任务，并在多台服务器上轻松执行。
@@ -99,7 +99,8 @@ Ansible 是一个极其流行的开源自动化工具，用于配置管理、应
 
 ### 系统配置
 
-考虑到这篇文件主要是面对0基础的小白，所以这里补充一些vi/vim编辑器的内容。![vim](/assets/img/k8s1/vim1.png)  
+考虑到这篇文件主要是面对0基础的小白，所以这里补充一些vi/vim编辑器的内容。  
+![vim](/assets/img/k8s1/vim1.png)  
 
 - 使用vim + 文件名/文件路径编辑文件
 - vim编辑器存在三种界面，如上图。默认模式为命令模式，可以理解为查看模式，无法对文件进行编辑
@@ -188,7 +189,7 @@ su root #su 切换用户，su后需要输入密码
    ![config_system](/assets/img/k8s1/sysc09.png)
 3. 在Rocky Linux将下面的内容直接复制到shell软件，发送到服务器【如果你没有shell请考虑使用powershell或者自己手敲，或者自己想办法将下面内容复制到服务器】  
    ![config_system](/assets/img/k8s1/sysc10.png)
-   内容如下:
+   内容如下:  
 ```shell
 sed -e 's|^mirrorlist=|#mirrorlist=|g' \
     -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
@@ -215,7 +216,7 @@ appstream                                                             Rocky Linu
 baseos                                                                Rocky Linux 9 - BaseOS
 extras                                                                Rocky Linux 9 - Extras
 ```
-安装下面软件bash-completion和wget,并且刷新bash命令解析器使得bash补全可以生效
+安装下面软件bash-completion和wget,并且刷新bash命令解析器使得bash补全可以生效  
 ```shell
 dnf install -y bash-completion wget vim
 bash
@@ -512,7 +513,7 @@ logdir /var/log/chrony
 systemctl restart chronyd
 systemctl status chronyd
 ```
-结果如下
+结果如下:  
 ```
 [root@localhost ~]# systemctl restart chronyd
 [root@localhost ~]# systemctl status chronyd
