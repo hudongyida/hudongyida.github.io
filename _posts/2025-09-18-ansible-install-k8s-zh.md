@@ -2,9 +2,12 @@
 layout    : post
 title     : "使用ansible部署k8s"
 date      : 2025-09-17
-lastupdate: 2025-09-18
+lastupdate: 2025-09-17
 categories: k8s
 ---
+# 文章受众
+1. 0基础的小白，刚刚开始学Linux，又想搭建一个k8s集群玩玩，感受过程的【建议从环境搭建虚拟机开始看】，如果你想系统性的学习Linux可以留言我的免费专栏"红帽工程师带你从0开始学Linux"
+2. 有一定的Linux基础，想了解ansible部署k8s，和kubeasz开源项目的【建议直接跳转到 开始安装】
 # 使用ansible部署k8s
 
 Ansible 是一个极其流行的开源自动化工具，用于配置管理、应用部署、任务自动化和IT编排。它让你可以用简单的语言描述自动化任务，并在多台服务器上轻松执行。
@@ -19,83 +22,84 @@ Ansible 是一个极其流行的开源自动化工具，用于配置管理、应
 **如果你会Linux系统配置，可以直接跳过下面步骤，直接移步至安装准备**
 
 ### 开始安装虚拟机
+**这里的安装虚拟机是针对k8s的安装需求设置的，如果你是想学Linux基础可以查看一下我的另一个专栏"红帽工程师带你从0开始学Linux"**
 
-1. 打开VMware Workstation，`文件`选项卡 `新建虚拟机`。VMware被Broadcom博通公司收购，对个人用户免费
+1. 打开VMware Workstation，`文件`选项卡 `新建虚拟机`。VMware被Broadcom博通公司收购，对个人用户免费  
    ![open_VMware](/assets/img/k8s1/vm1.png)
-2. 选择 `自定义`，然后点击下一步
+2. 选择 `自定义`，然后点击下一步  
    ![open_VMware](/assets/img/k8s1/vm2.png)
-3. 硬件兼容性默认即可，下一步
+3. 硬件兼容性默认即可，下一步  
    ![open_VMware](/assets/img/k8s1/vm3.png)
-4. 新建虚拟机向导选择 `稍微安装操作系统`
+4. 新建虚拟机向导选择 `稍微安装操作系统`  
    ![open_VMware](/assets/img/k8s1/vm4.png)
-5. 选择 `Linux`，并且在下面的下拉列表中选择Rocky Linux,如果没有则选择Red Hat Enterprise Linux 9
+5. 选择 `Linux`，并且在下面的下拉列表中选择Rocky Linux,如果没有则选择Red Hat Enterprise Linux 9  
    ![open_VMware](/assets/img/k8s1/vm5.png)
    ![open_VMware](/assets/img/k8s1/vm6.png)
-6. 设置主机名称，并且修改位置，位置默认为C盘
+6. 设置主机名称，并且修改位置，位置默认为C盘  
    ![open_VMware](/assets/img/k8s1/vm7.png)
-7. 修改处理器配置，处理器内核总数>4即可，数量2内核2或者数量4内核1均可
+7. 修改处理器配置，处理器内核总数>4即可，数量2内核2或者数量4内核1均可  
    ![open_VMware](/assets/img/k8s1/vm8.png)
-8. Mstaer节点内存，官方文档推荐8G+，最小为2G，但2G内存仅仅只能将集群搭建出来，无法进行更多的集群操作了，所以这里设置为4G
+8. Mstaer节点内存，官方文档推荐8G+，最小为2G，但2G内存仅仅只能将集群搭建出来，无法进行更多的集群操作了，所以这里设置为4G  
    ![open_VMware](/assets/img/k8s1/vm9.png)
-9. 配置第一张网卡的网络类型，这里设置为NAT
+9. 配置第一张网卡的网络类型，这里设置为NAT  
    ![open_VMware](/assets/img/k8s1/vm10.png)
-10. 这里默认即可
+10. 这里默认即可  
     ![open_VMware](/assets/img/k8s1/vm11.png)
-11. 这里也是默认即可，VM会自动旋转合适的硬盘类型
+11. 这里也是默认即可，VM会自动旋转合适的硬盘类型  
     ![open_VMware](/assets/img/k8s1/vm12.png)
-12. 创建新的虚拟硬盘
+12. 创建新的虚拟硬盘  
     ![open_VMware](/assets/img/k8s1/vm13.png)
-13. 设置为为50G
+13. 设置为为50G  
     ![open_VMware](/assets/img/k8s1/vm14.png)
-14. 保持默认即可
+14. 保持默认即可  
     ![open_VMware](/assets/img/k8s1/vm15.png)
-15. 这里用来预览刚刚的虚拟机设置
+15. 这里用来预览刚刚的虚拟机设置  
     ![open_VMware](/assets/img/k8s1/vm16.png)
-16. 完成后点击左上角的 `编辑`，在编辑选项卡中选 `择虚拟网络编辑器`
+16. 完成后点击左上角的 `编辑`，在编辑选项卡中选 `择虚拟网络编辑器`  
     ![open_VMware](/assets/img/k8s1/vm17.png)
-17. 正常情况下只有VMnet1和VMnet8，一个对用仅主机模式，一个对应的NAT模式，点击下面的 `更改设置`
+17. 正常情况下只有VMnet1和VMnet8，一个对用仅主机模式，一个对应的NAT模式，点击下面的 `更改设置`  
     ![open_VMware](/assets/img/k8s1/vm18.png)
-18. 在进入到编辑界面后选择 `添加网络`
+18. 在进入到编辑界面后选择 `添加网络`  
     ![open_VMware](/assets/img/k8s1/vm19.png)
-19. 在选择要添加的虚拟网络下拉列表中随机选择一个，我这里选择的VMnet19网络
+19. 在选择要添加的虚拟网络下拉列表中随机选择一个，我这里选择的VMnet19网络  
     ![open_VMware](/assets/img/k8s1/vm20.png)
-20. 在添加虚拟网络后，按下面内容进行配置，选择 `仅主机模式`，并且将 `将主机虚拟适配器连接到此网络 `选项勾选，将 `使用本地DHCP服务器IP地址分配给虚拟机`,并且设置子网和子网掩码，完成后点击应用，点击确定
+20. 在添加虚拟网络后，按下面内容进行配置，选择 `仅主机模式`，并且将 `将主机虚拟适配器连接到此网络 `选项勾选，将 `使用本地DHCP服务器IP地址分配给虚拟机`,并且设置子网和子网掩码，完成后点击应用，点击确定  
     ![open_VMware](/assets/img/k8s1/vm21.png)
-21. 在完成上面操作后回到初始页面，选择 `编辑虚拟机设置`
+21. 在完成上面操作后回到初始页面，选择 `编辑虚拟机设置`  
     ![open_VMware](/assets/img/k8s1/vm25.png)
-22. 点击最下面的 `添加`按钮
+22. 点击最下面的 `添加`按钮  
     ![open_VMware](/assets/img/k8s1/vm22.png)
-23. 在要添加的硬件中选择 `网络适配器`,点击完成
+23. 在要添加的硬件中选择 `网络适配器`,点击完成  
     ![open_VMware](/assets/img/k8s1/vm23.png)
-24. 再回到 `虚拟机设置`界面，选择刚刚添加的 `网络适配器2`在网络连接中选择自定义，在自定义中选择前面设置的虚拟网络，我前添加的是VMnet19，所以这里选择VMnet19
+24. 再回到 `虚拟机设置`界面，选择刚刚添加的 `网络适配器2`在网络连接中选择自定义，在自定义中选择前面设置的虚拟网络，我前添加的是VMnet19，所以这里选择VMnet19  
     ![open_VMware](/assets/img/k8s1/vm24.png)
-25. 完成后选择CD/DVD，在连接中选择下载好的RockyLinux iso文件，完成后点击确定
+25. 完成后选择CD/DVD，在连接中选择下载好的RockyLinux iso文件，完成后点击确定  
     ![open_VMware](/assets/img/k8s1/vm26.png)
-26. 回到主页面后点击 `开启此虚拟机`
+26. 回到主页面后点击 `开启此虚拟机`  
     ![open_VMware](/assets/img/k8s1/vm27.png)
 
 ### 安装系统
 
-1. 如果前面的步骤正确，系统开启后直接按回车即可进入此界面，选择语言，你可以选择中文，我只是个人不太习惯在Linux的终端中看见中文，所以我选择的英文
+1. 如果前面的步骤正确，系统开启后直接按回车即可进入此界面，选择语言，你可以选择中文，我只是个人不太习惯在Linux的终端中看见中文，所以我选择的英文  
    ![instll_system](/assets/img/k8s1/sys02.png)
-2. 一次完成下面配置，这里先配置的是 `Installation Destination`就是安装的磁盘配置
+2. 一次完成下面配置，这里先配置的是 `Installation Destination`就是安装的磁盘配置  
    ![instll_system](/assets/img/k8s1/sys03.png)
-3. 新手直接默认即可，选择下面的 `Local Standard Disks`的磁盘即可中文 `本地标准磁盘`即按照默认的分区标准进行分区，完成后单机左上角的 `Done`即可
+3. 新手直接默认即可，选择下面的 `Local Standard Disks`的磁盘即可中文 `本地标准磁盘`即按照默认的分区标准进行分区，完成后单机左上角的 `Done`即可  
    ![instll_system](/assets/img/k8s1/sys04.png)
-4. 再是 `Software selection`软件选择，模式是 `Server with GUI`即带图形化的界面，你可以使用默认选项，也推荐小白使用，我这里选择的 `Minimal Install`即最小系统安装。优点是小，安装快。
+4. 再是 `Software selection`软件选择，模式是 `Server with GUI`即带图形化的界面，你可以使用默认选项，也推荐小白使用，我这里选择的 `Minimal Install`即最小系统安装。优点是小，安装快。  
    ![instll_system](/assets/img/k8s1/sys05.png)
-5. 最后是 `Root Password`推荐密码尽可能的简单容易记，我这里设置的六个0,【注意这里是虚拟机的实验环境，生产环境中严禁使用此密码】完成后点击 `Done`点击后可能没反应，是因为密码无法通过最低安全审查，但是在虚拟机环境中双击或三击即可强制跳过安全审查【再次声明，在生成环境中严禁这样操作】
+5. 最后是 `Root Password`推荐密码尽可能的简单容易记，我这里设置的六个0,【注意这里是虚拟机的实验环境，生产环境中严禁使用此密码】完成后点击 `Done`点击后可能没反应，是因为密码无法通过最低安全审查，但是在虚拟机环境中双击或三击即可强制跳过安全审查【再次声明，在生成环境中严禁这样操作】  
    ![instll_system](/assets/img/k8s1/sys06.png)
-6. 在设置完成后选择 `Begin installation`开始安装，在设置了Root Password密码后User creation再会有提示，所以我们无需配置User creation
+6. 在设置完成后选择 `Begin installation`开始安装，在设置了Root Password密码后User creation再会有提示，所以我们无需配置User creation  
    ![instll_system](/assets/img/k8s1/sys07.png)
-7. 等待系统安装完成
+7. 等待系统安装完成  
    ![instll_system](/assets/img/k8s1/sys08.png)
-8. 安装完成后点击 `Reboot System`重启系统
+8. 安装完成后点击 `Reboot System`重启系统  
    ![instll_system](/assets/img/k8s1/sys09.png)
 
 ### 系统配置
 
-考虑到这篇文件主要是面对0基础的小白，所以这里补充一些vi/vim编辑器的内容。![vim](/assets/img/k8s1/vim1.png)
+考虑到这篇文件主要是面对0基础的小白，所以这里补充一些vi/vim编辑器的内容。![vim](/assets/img/k8s1/vim1.png)  
 
 - 使用vim + 文件名/文件路径编辑文件
 - vim编辑器存在三种界面，如上图。默认模式为命令模式，可以理解为查看模式，无法对文件进行编辑
@@ -104,44 +108,35 @@ Ansible 是一个极其流行的开源自动化工具，用于配置管理、应
 
 在了解完vi/vim的基本操作后，我们进行下一步操作
 
-1. 在进入系统后界面如下，如果在安装的时候选择的是最小安装效果就和下面的图片一样，如果是有图形化界面则会有图形化的登入界面
+1. 在进入系统后界面如下，如果在安装的时候选择的是最小安装效果就和下面的图片一样，如果是有图形化界面则会有图形化的登入界面  
    ![config_system](/assets/img/k8s1/sysc01.png)
-2. 在login后面输入 `root`回车，回车后会要提示输入密码，我们前面设置的000000，所以这里直接输入000000，**在输入密码的时候不会显示密码**
+2. 在login后面输入 `root`回车，回车后会要提示输入密码，我们前面设置的000000，所以这里直接输入000000，**在输入密码的时候不会显示密码**  
    ![config_system](/assets/img/k8s1/sysc02.png)
-3. 进入系统后键入下面命令，如果是图形化界面在桌面右键鼠标，在弹出的快捷菜单中选择 `终端`英文为 `Terminal`在新打开的命令行窗口中输入下面命令***严重警告，如果你实在是没有把握执行这一步操作请跳过，见后面的故障解决，没有ssh远程连接，你后面的操作都会异常痛苦***
-
+3. 进入系统后键入下面命令，如果是图形化界面在桌面右键鼠标，在弹出的快捷菜单中选择 `终端`英文为 `Terminal`在新打开的命令行窗口中输入下面命令***严重警告，如果你实在是没有把握执行这一步操作请跳过，见后面的故障解决，没有ssh远程连接，你后面的操作都会异常痛苦***  
 ```shell
 vi /etc/ssh/sshd_config
 ```
-
    ![config_system](/assets/img/k8s1/sysc03.png)
-
-4. 使用编辑器编辑ssh的配置文件，找到文件中的 `PermitRootLogin`选项
+4. 使用编辑器编辑ssh的配置文件，找到文件中的 `PermitRootLogin`选项  
    ![config_system](/assets/img/k8s1/sysc04.png)
-5. 按i进入编辑模式，先将 `PermitRootLogin`选项前的 `#`删除，将后面的值改为yes,内容如下
-
+5. 按i进入编辑模式，先将 `PermitRootLogin`选项前的 `#`删除，将后面的值改为yes,内容如下  
 ```cfg
 # LoginGraceTime 2m
 PermitRootLogin yes
 # StrictModes yes
 ```
-
-如果你选择的是图形化安装或者你安装了其他的扩展工具那么这个选项可能已经是yes了，那么这个时候则无需处理了，但是在默认情况下Rocky Linux默认是禁用root用户使用ssh进行登入，但是普通用户可以使用ssh进行登入，如果你不会操作可以暂时跳过这一步
-
+如果你选择的是图形化安装或者你安装了其他的扩展工具那么这个选项可能已经是yes了，那么这个时候则无需处理了，但是在默认情况下Rocky Linux默认是禁用root用户使用ssh进行登入，但是普通用户可以使用ssh进行登入，如果你不会操作可以暂时跳过这一步  
 6. 完成后 `esc`进入命令模式，按 `:`进入末行模式，输入 `x`保存并退出
    ![config_system](/assets/img/k8s1/sysc05.png)
-7. 完成后键入下面命令,命令输入完成后和下面的图片内容一样则表示成功，转态提示绿色则表示成功，如果状态提示为红色或者灰色则表示服务重启失败，大概率是在刚刚修改配置文件的配置文件修改失败。请返回第三步重新进行操作。【如果你实在是无法修复错误，那么你可能需要回到第一步重新开始做】
-
+7. 完成后键入下面命令,命令输入完成后和下面的图片内容一样则表示成功，转态提示绿色则表示成功，如果状态提示为红色或者灰色则表示服务重启失败，大概率是在刚刚修改配置文件的配置文件修改失败。请返回第三步重新进行操作。【如果你实在是无法修复错误，那么你可能需要回到第一步重新开始做】  
 ```shell
 systemctl restart sshd
 systemctl status sshd
 ```
-
    ![config_system](/assets/img/k8s1/sysc06.png)
-8. 完成上面步骤后则表示ssh可以使用，这里使用 `ip a`命令来查看系统的IP地址，这里有ens160和ens192两张网卡，记录下ens160也就是网络适配器1的地址，使用的NAT地址的模式。这里我们使用ssh远程软件【XShell，SecureCRT，MobaXterm等】来连接系统，我这里使用的Xshell。当然你也可以选择用win自带的powershell，但我的评价是能用，仅仅只是能用，比你在虚拟机里面手敲终端好使。我为什么这么说，你待会就知道了
+8. 完成上面步骤后则表示ssh可以使用，这里使用 `ip a`命令来查看系统的IP地址，这里有ens160和ens192两张网卡，记录下ens160也就是网络适配器1的地址，使用的NAT地址的模式。这里我们使用ssh远程软件【XShell，SecureCRT，MobaXterm等】来连接系统，我这里使用的Xshell。当然你也可以选择用win自带的powershell，但我的评价是能用，仅仅只是能用，比你在虚拟机里面手敲终端好使。我为什么这么说，你待会就知道了  
    ![config_system](/assets/img/k8s1/sysc07.png)
 ssh连接命令
-
 ```shell
 ssh root@你刚刚记录的IP地址
 ```
@@ -154,11 +149,11 @@ ssh root@你刚刚记录的IP地址
 
 两种可能
 
-1. 需要连接外网的网卡没有被设置到NAT模式，请确保网络模式为NAT
+1. 需要连接外网的网卡没有被设置到NAT模式，请确保网络模式为NAT  
    ![error1](/assets/img/k8s1/error01.png)
-2. NAT的网络的DHCP没开启，请确保图片中的√被√上了
+2. NAT的网络的DHCP没开启，请确保图片中的√被√上了  
    ![error1](/assets/img/k8s1/error02.png)
-3. 系统未能正确自动配置网络,在执行此命令的时候请一定确保前面的DHCP已经被正确配置
+3. 系统未能正确自动配置网络,在执行此命令的时候请一定确保前面的DHCP已经被正确配置  
 
 ```shell
 nmcli connection modify ens160 ipv4.method auto autoconnect yes
@@ -166,16 +161,12 @@ nmcli connection up ens160
 ```
 
 #### 完全不会配置ssh配置文件的
-
 在终端中执行下面命令
-
 ```shell
 useradd test1
 echo 000000 | passwd --stdin test1
 ```
-
 使用test1进行远程
-
 ```shell
 ssh test1@你刚刚记录的IP地址
 su root #su 切换用户，su后需要输入密码
@@ -191,14 +182,13 @@ su root #su 切换用户，su后需要输入密码
 
 ### 配置yum源
 
-1. 配置yum源，打开[阿里镜像站](https://developer.aliyun.com/mirror/)
+1. 配置yum源，打开[阿里镜像站](https://developer.aliyun.com/mirror/)  
    ![config_system](/assets/img/k8s1/sysc08.png)
-2. 在搜索栏搜索Rocky
+2. 在搜索栏搜索Rocky  
    ![config_system](/assets/img/k8s1/sysc09.png)
-3. 在Rocky Linux将下面的内容直接复制到shell软件，发送到服务器【如果你没有shell请考虑使用powershell或者自己手敲，或者自己想办法将下面内容复制到服务器】
+3. 在Rocky Linux将下面的内容直接复制到shell软件，发送到服务器【如果你没有shell请考虑使用powershell或者自己手敲，或者自己想办法将下面内容复制到服务器】  
    ![config_system](/assets/img/k8s1/sysc10.png)
    内容如下:
-
 ```shell
 sed -e 's|^mirrorlist=|#mirrorlist=|g' \
     -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g' \
@@ -207,16 +197,12 @@ sed -e 's|^mirrorlist=|#mirrorlist=|g' \
 
 dnf makecache
 ```
-
-完成后使用下面命令检查仓库,yum和dnf二选一即可，命令功效是一样的
-
+完成后使用下面命令检查仓库,yum和dnf二选一即可，命令功效是一样的  
 ```shell
 dnf repolist
 yum repolist
 ```
-
-输出结果如下就是对的
-
+输出结果如下就是对的  
 ```
 [root@localhost ~]# dnf repolist
 repo id                                                               repo name
@@ -229,18 +215,14 @@ appstream                                                             Rocky Linu
 baseos                                                                Rocky Linux 9 - BaseOS
 extras                                                                Rocky Linux 9 - Extras
 ```
-
 安装下面软件bash-completion和wget,并且刷新bash命令解析器使得bash补全可以生效
-
 ```shell
 dnf install -y bash-completion wget vim
 bash
 ```
-
-4. 回到主页选择 镜像 -> 容器 分别配置下面连个仓库
+4. 回到主页选择 镜像 -> 容器 分别配置下面连个仓库  
    ![config_system](/assets/img/k8s1/sysc11.png)
-5. Kubernetes镜像仓库配置,待会安装的是v1.32版本的集群，所以配置内容如下，详情可以自行前往网页查看，[Kubernetes镜像仓库](https://developer.aliyun.com/mirror/kubernetes)
-
+5. Kubernetes镜像仓库配置,待会安装的是v1.32版本的集群，所以配置内容如下，详情可以自行前往网页查看，[Kubernetes镜像仓库](https://developer.aliyun.com/mirror/kubernetes)  
 ```shell
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -252,10 +234,8 @@ gpgkey=https://mirrors.aliyun.com/kubernetes-new/core/stable/v1.32/rpm/repodata/
 EOF
 setenforce 0
 ```
-
-6. Docker CE镜像，这里配置docker进行是因为后面的kubeasz项目使用的ansible in docker的安装方式，所以这里会安装docker
-   但是要注意k8s不是使用docker，docker是容器技术的应用，但是k8s集群至始至终都没用系统支持docker ce引擎，k8s在开发之初便是采用dockershim兼容docker ce容器引擎。只是在k8s V1.24之前默认安装dockershim兼容层，但是在k8s v1.24版本后k8s不再默认安装dockershim兼容层而是使用cri容器运行时和容器运行时接口进行容器的管理。当然如果你非要继续使用docker作为k8s的容器引擎也不是不行，只是现在有了更多选择。比如containerd，CRI-O等
-
+6. Docker CE镜像，这里配置docker进行是因为后面的kubeasz项目使用的ansible in docker的安装方式，所以这里会安装docker  
+   但是要注意k8s不是使用docker，docker是容器技术的应用，但是k8s集群至始至终都没用系统支持docker ce引擎，k8s在开发之初便是采用dockershim兼容docker ce容器引擎。只是在k8s V1.24之前默认安装dockershim兼容层，但是在k8s v1.24版本后k8s不再默认安装dockershim兼容层而是使用cri容器运行时和容器运行时接口进行容器的管理。当然如果你非要继续使用docker作为k8s的容器引擎也不是不行，只是现在有了更多选择。比如containerd，CRI-O等  
 ```shell
     # step 1: 安装必要的一些系统工具
 sudo yum install -y yum-utils
@@ -286,15 +266,12 @@ sudo systemctl enable docker.service --now
     # Step2: 安装指定版本的Docker-CE: (VERSION例如上面的17.03.0.ce.1-1.el7.centos)
     # sudo yum -y install docker-ce-[VERSION]
 ```
-
 7. 上面步骤完成后执行下面命令,如果没有dnf的请将dnf改为yum
-
 ```shell
 dnf clean all
 dnf makecache
 dnf repolist
 ```
-
 ### docker 加速地址配置
 
 由于docker仓库是在国外，所以在国内访问需要使用镜像加速地址
@@ -483,16 +460,13 @@ nmcli connection up ens192
 
 ### NTP时间同步配置
 
-1. 使用date命令查看系统时间
-
+1. 使用date命令查看系统时间  
 ```
 [root@localhost ~]# date
 Thu Sep 18 04:18:32 PM CST 2025
 ```
-
-这里的时间是 `CST`中国标准时间
+这里的时间是 `CST`中国标准时间  
 2. 如果你的时区不是中国则需要使用下面命令进行修改，如果已经是CST了则不需要修改，系统的时区设置决定了如何显示从NTP服务器同步来的UTC时间。如果系统时区是东8区（UTC+8），同步后显示的时间就是北京时间；如果是西8区（UTC-8），显示的时间就是太平洋标准时间。不过不管哪个时区都对k8s集群的影响不大，我们仅需要保证集群内部的时间是同步的即可，只要你想你甚至可以自己时间同步服务器，并且设置集群内部时间为1999年1月1号**警告，在实验环境中你可以配置1999.1.1的日期，玩玩做实验完全没问题，但是在生产环境中严禁这样配置**
-
 ```shell
     # 1. 查看当前状态
 timedatectl
@@ -506,24 +480,18 @@ sudo timedatectl set-timezone Asia/Shanghai
 timedatectl
 date
 ```
-
-3. 打开阿里云镜像站,点击 `网络授时NTP` -> `NTP`
+3. 打开阿里云镜像站,点击 `网络授时NTP` -> `NTP`  
    ![config_system](/assets/img/k8s1/sysc12.png)
-4. 安装chrony客户端
-
+4. 安装chrony客户端  
 ```shell
 dnf -y install chrony
 ```
-
-5. 修改配置文件,这里使用的阿里云的[NTP网络授时](https://developer.aliyun.com/mirror/NTP)
-
+5. 修改配置文件,这里使用的阿里云的[NTP网络授时]  (https://developer.aliyun.com/mirror/NTP)
 ```shell
 rm -rf /etc/chrony.conf
 vim /etc/chrony.conf
 ```
-
-将下面内容粘贴到 `/etc/chrony.conf`文件中
-
+将下面内容粘贴到 `/etc/chrony.conf`文件中  
 ```conf
 server ntp.aliyun.com iburst
 stratumweight 0
@@ -538,17 +506,13 @@ generatecommandkey
 logchange 0.5
 logdir /var/log/chrony
 ```
-
-完成后 `esc`进入命令模式，按 `:`进入末行模式，输入 `x`保存并退出
-6. 重启时间服务
-
+完成后 `esc`进入命令模式，按 `:`进入末行模式，输入 `x`保存并退出  
+6. 重启时间服务  
 ```shell
 systemctl restart chronyd
 systemctl status chronyd
 ```
-
 结果如下
-
 ```
 [root@localhost ~]# systemctl restart chronyd
 [root@localhost ~]# systemctl status chronyd
@@ -575,86 +539,72 @@ Sep 18 17:12:40 localhost.localdomain chronyd[29534]: Loaded seccomp filter (lev
 Sep 18 17:12:40 localhost.localdomain systemd[1]: Started NTP client/server.
 Sep 18 17:12:44 localhost.localdomain chronyd[29534]: Selected source 203.107.6.88 (ntp.aliyun.com)
 ```
-
-7. 使用下面命令立刻进行时间同步
-
+7. 使用下面命令立刻进行时间同步  
 ```shell
 chronyc makestep    #强制 Chrony 立即检查所有时间源并更新时钟
 chronyc sources -v  #查看时间源的状态信息
 chronyc tracking    #查看跟踪的当前同步状态
 date                #查看系统时间
 ```
-
-同步结果如下
+同步结果如下  
 ![config_system](/assets/img/k8s1/sysc13.png)
-
 ### 虚拟机克隆
-
 如果你是按照我的步骤完成的你会发现我文章只配置了一台服务器，但这里需要两台服务器才能实现，所以请按照下面的步骤完成虚拟机克隆，但如果你是两台服务器同时配置的请跳过虚拟机克隆
-
-1. 在终端键入命令,关闭服务器
-
+1. 在终端键入命令,关闭服务器  
 ```shell
 poweroff
 ```
-
-2. 添加虚拟机快照
+2. 添加虚拟机快照  
    ![vm_mirror](/assets/img/k8s1/vm30.png)
-3. 名称虽然可以不用修改，但是为了后续方便还原快照推荐还是修改一个名称，名称修改完毕后点击拍摄快照。我这里给的备注是"基础配置完成"。
+3. 名称虽然可以不用修改，但是为了后续方便还原快照推荐还是修改一个名称，名称修改完毕后点击拍摄快照。我这里给的备注是"基础配置完成"。  
    ![vm_mirror](/assets/img/k8s1/vm31.png)
-4. 快照拍摄完成后再左边的侧边栏找到刚刚的虚拟机右键，在快捷菜单中选择 `管理`，再在子菜单中选择 `克隆`
+4. 快照拍摄完成后再左边的侧边栏找到刚刚的虚拟机右键，在快捷菜单中选择 `管理`，再在子菜单中选择 `克隆`  
    ![vm_mirror](/assets/img/k8s1/vm32.png)
-5. 进入克隆虚拟机导向，点击下一步
+5. 进入克隆虚拟机导向，点击下一步  
    ![vm_mirror](/assets/img/k8s1/vm33.png)
-6. 选择 `现有快照`在下拉菜单中选择刚刚拍摄的快照，我前面的备注是"基础配置完成"，所以这里的选项是"基础配置完成"，选择完毕后下一步
+6. 选择 `现有快照`在下拉菜单中选择刚刚拍摄的快照，我前面的备注是"基础配置完成"，所以这里的选项是"基础配置完成"，选择完毕后下一步  
    ![vm_mirror](/assets/img/k8s1/vm34.png)
-7. 你可以更具自己的需求选择选择是创建链接克隆还是完整克隆，考虑到读者的存储未必有这么多，所以这里选择的是创建链接克隆，完成后下一步
+7. 你可以更具自己的需求选择选择是创建链接克隆还是完整克隆，考虑到读者的存储未必有这么多，所以这里选择的是创建链接克隆，完成后下一步  
    ![vm_mirror](/assets/img/k8s1/vm35.png)
-8. 和之前一致，需要修改 `虚拟机名称`和 `位置`完成后点击 `完成`
+8. 和之前一致，需要修改 `虚拟机名称`和 `位置`完成后点击 `完成`  
    ![vm_mirror](/assets/img/k8s1/vm36.png)
-9. 克隆完成
+9. 克隆完成  
    ![vm_mirror](/assets/img/k8s1/vm37.png)
-10. 在侧边栏选中刚刚克隆的node1主机，点击 `编辑虚拟机设置`
+10. 在侧边栏选中刚刚克隆的node1主机，点击 `编辑虚拟机设置`  
     ![vm_mirror](/assets/img/k8s1/vm38.png)
-11. 点击内存，在右侧将内存提高到8G，node节点是容器任务的主要运行地方，需要更大的内存来支撑众多的服务，虽然这是在实验环境中，但我依然推荐你配置更高的内存，但是如果你电脑内存实在吃紧不修改也无伤大雅
+11. 点击内存，在右侧将内存提高到8G，node节点是容器任务的主要运行地方，需要更大的内存来支撑众多的服务，虽然这是在实验环境中，但我依然推荐你配置更高的内存，但是如果你电脑内存实在吃紧不修改也无伤大雅  
     ![vm_mirror](/assets/img/k8s1/vm39.png)
-12. 开启node1虚拟机，仅开node1不开Master，仅开node1不开Master，仅开node1不开Master。因为node1此时是Master的克隆，IP地址都是一样的，在开启node1的同时将Master节点打开会出现IP地址冲突的情况，如果你不小心将Master节点开启了请立刻关闭
+12. 开启node1虚拟机，仅开node1不开Master，仅开node1不开Master，仅开node1不开Master。因为node1此时是Master的克隆，IP地址都是一样的，在开启node1的同时将Master节点打开会出现IP地址冲突的情况，如果你不小心将Master节点开启了请立刻关闭  
     ![vm_mirror](/assets/img/k8s1/vm40.png)
-13. 使用ssh远程工具连接10.0.0.10,因为此时我们只开了node1一台服务器，只有一个10.0.0.10地址，如果你将Master节点启动，此时10.0.0.0网络中会存在两台10.0.0.10地址，会直接导致连接失败
+13. 使用ssh远程工具连接10.0.0.10,因为此时我们只开了node1一台服务器，只有一个10.0.0.10地址，如果你将Master节点启动，此时10.0.0.0网络中会存在两台10.0.0.10地址，会直接导致连接失败  
     ![vm_mirror](/assets/img/k8s1/vm41.png)
-14. 在使用10.0.0.10的地址连接上后执行下面命令，将IP地址修改为11，请注意这条命令和前面的命令几乎是一模一样，唯一的区别在 `ipv4.addresses 10.0.0.11/8`一个是10一个是11
-
+14. 在使用10.0.0.10的地址连接上后执行下面命令，将IP地址修改为11，请注意这条命令和前面的命令几乎是一模一样，唯一的区别在 `ipv4.addresses 10.0.0.11/8`一个是10一个是11  
 ```shell
 nmcli connection modify ens192 ipv4.addresses 10.0.0.11/8 ipv4.gateway 10.0.0.254 ipv4.method manual autoconnect yes
 nmcli connection up ens192
 ```
-
-15. 在你输入完这条命令后可能会出现下面情况，但是请不要慌张，这不是表明你配置错了，相反，你只有配置正确的才会出现这个情况
+15. 在你输入完这条命令后可能会出现下面情况，但是请不要慌张，这不是表明你配置错了，相反，你只有配置正确的才会出现这个情况  
     ![vm_mirror](/assets/img/k8s1/vm42.png)
-    这表明TCP连接超时，连接关闭，为什么会这样，因为我们修改了主机的IP地址，ssh无法和原来的的IP地址建立连接，所以出现了TCP超时，ssh连接关闭，我们只需要重新建立和10.0.0.11/8的链接就可以了
-
+    这表明TCP连接超时，连接关闭，为什么会这样，因为我们修改了主机的IP地址，ssh无法和原来的的IP地址建立连接，所以出现了TCP超时，ssh连接关闭，我们只需要重新建立和10.0.0.11/8的链接就可以了  
 ```shell
 ssh root@10.0.0.11
 ```
-
     ![vm_mirror](/assets/img/k8s1/vm43.png)
     ssh连接便恢复了
-16. 完成上面步骤后请键入 `poweroff`命令关闭虚拟机，并且安装前面的步骤2-3完成node节点的快照创建，如果完成了快照可以通过下面方式查看历史快照
+  
+16. 完成上面步骤后请键入 `poweroff`命令关闭虚拟机，并且安装前面的步骤2-3完成node节点的快照创建，如果完成了快照可以通过下面方式查看历史快照  
     ![vm_mirror](/assets/img/k8s1/vm44.png)
-
 ## 开始安装
-
-这里使用的Github的开源项目[kubeasz](https://github.com/easzlab/kubeasz)
+这里使用的Github的开源项目[kubeasz](https://github.com/easzlab/kubeasz)  
 ![kubeasz](/assets/img/k8s1/kubeasz01.png)
-
-IP节点规划  *如果你没有两台及以上的服务器请返回上一步的虚拟机克隆*
+IP节点规划  *如果你没有两台及以上的服务器请返回上一步的虚拟机克隆*  
 
 | 节点主机                               | IP地址      | 功能        |
 | -------------------------------------- | ----------- | ----------- |
 | Master                                 | 10.0.0.10/8 | master etcd |
 | node1                                  | 10.0.0.11/8 | node        |
-| 下面内容摘自官方文档，我做了些许的补充 |             |             |
 
+下面内容摘自官方文档，我做了些许的补充
 ### 1.基础系统配置【已完成，见步骤1环境搭建】
 
 - 2c/4g内存/40g硬盘（该配置仅测试用）
@@ -704,7 +654,7 @@ The key's randomart image is:
 ```
 
 没错 `ssh-keygen`命令后接三个回车即可，什么都不用管。ssh的RSA秘钥就这样的被创建出来了。
-那么刚刚创建出来的ssh秘钥在哪？如下图
+那么刚刚创建出来的ssh秘钥在哪？如下图  
 ![ssh](/assets/img/k8s1/ssh.png)
 这里可以使用ls 命令查看
 
