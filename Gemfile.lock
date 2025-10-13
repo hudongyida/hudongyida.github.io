@@ -98,11 +98,13 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bundler
   compass
   jekyll
   jekyll-feed
   jekyll-paginate
   normalize-scss
+  rake
   sass
   support-for
   susy

@@ -8,3 +8,6 @@ gem "compass"
 gem "sass"
 gem "support-for"
 gem 'jekyll-feed'
+
+gem "rake"
+gem "bundler"
