@@ -248,7 +248,8 @@ SVC_TYPE=NodePort
 - DOCKER_REGISTRY_NAME: 不考虑，同理，默认
 - ACK_CLUSTER_ID: ACK集群ID我的值是`c5422b77ef09449a4963d266a3be81202`  
 ![ci](/assets/img/github-cicd-to-ack/github-ci-24.png)  
-修改完毕后的配置文件如下，这分配置文件仅适用于我
+修改完毕后的配置文件如下，这分配置文件仅适用于我  
+  
 ```env
    # The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
 PUSH_REGISTRY_KIND=ali
