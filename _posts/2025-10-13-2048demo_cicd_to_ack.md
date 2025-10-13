@@ -69,7 +69,7 @@ categories: k8s
 3. 创建RMA用户  
    ![ACK](/assets/img/github-cicd-to-ack/RMA-3.png)  
    ![ACK](/assets/img/github-cicd-to-ack/RMA-4.png)  
-4. 完成身份验证后会创建就完成了，如下图
+4. 完成身份验证后会创建就完成了，如下图  
    ![ACK](/assets/img/github-cicd-to-ack/RMA-5.png)  
    ![ACK](/assets/img/github-cicd-to-ack/RMA-6.png)  
 5. 下面步骤是开启VMFA安全验证，因为阿里云的默认策略原因，RMA账户必须开启VMFA,如果不开启会导致RMA账户无法使用。如果你前面设置了不要求开启MFA认证，则可跳过此步骤。  
@@ -160,7 +160,7 @@ categories: k8s
    在开通`可观测监控 Prometheus 版`的时候不是授权，而是需要开通，直接开通即可，我是已经开通了，所以这里的开开通是灰色的。  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-B7.png) 
    上面步骤完成后，应该会和【ACK-23】图一样  
-9. 创建集群
+9. 创建集群  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-24.png)  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-25.png)  
    完成后效果如下  
@@ -187,7 +187,7 @@ categories: k8s
    ![ci](/assets/img/github-cicd-to-ack/github-ci-13.png)  
 - ACCESS_KEY_SECRET: 也是同理`AccessKey Secret`就是变量`ACCESS_KEY_SECRET`的值  
   ![ci](/assets/img/github-cicd-to-ack/github-ci-14.png)  
-- ACR_USERNAME: 用于仓库登入，就是你的阿里云主账户用户名，为什么不是hu.... 前面已经说了，仓库部分我使用的是别人的账户做演示，所以是cg....
+- ACR_USERNAME: 用于仓库登入，就是你的阿里云主账户用户名，为什么不是hu.... 前面已经说了，仓库部分我使用的是别人的账户做演示，所以是cg....  
   ![ci](/assets/img/github-cicd-to-ack/github-ci-15.png)  
   ![ci](/assets/img/github-cicd-to-ack/github-ci-16.png)  
 - ACR_PASSWORD：登入仓库的密码，`阿里云ACR 镜像仓库`配置的第5步，配置的密码  
@@ -199,24 +199,24 @@ categories: k8s
 ### .env变量文件配置
 这是基础默认的配置文件。  
 ```env
-# The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
+   # The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
 PUSH_REGISTRY_KIND=ali
 
-# Aliyun ACK config
+   # Aliyun ACK config
 REGION_ID=cn-hangzhou
 REGISTRY=registry.cn-hangzhou.aliyuncs.com
 NAMESPACE=namespace
 IMAGE=image_name
 INSTANCE_ID=you_instance_id
 
-# Docker Hub config (If you want to use this configuration, you need to modify the value of "PUSH_REGISTRY_KIND")
+   # Docker Hub config (If you want to use this configuration, you need to modify the value of "PUSH_REGISTRY_KIND")
 DOCKER_NAMESPACE=NULL  #Your Docker Hub ID
 DOCKER_REGISTRY_NAME=NULL  #Your Docker Hub repository name
 
-# cluster config
+   # cluster config
 ACK_CLUSTER_ID=
 
-# application config
+   # application config
 ACK_NAMESPACE=default
 ACK_DEPLOYMENT_NAME=demo2048
 APP_NAME=demo2048
@@ -224,7 +224,7 @@ REPLICAS=1
 CONTAINER_NAME=demo2048
 CONTAINER_PORT=80
 
-# svc config
+   # svc config
 SVC_NAME=demo2048-svc
 SVC_PROTOCOL=TCP
 SVC_PORT=80
@@ -232,7 +232,7 @@ SVC_TARGET_PORT=80
 SVC_NODE_PORT=30080  #This parameter may not take effect.
 SVC_TYPE=NodePort
 
-# Ingress config
+   # Ingress config
 ```
 - PUSH_REGISTRY_KIND：表示你需要将构建出来的镜像推送到哪个仓库，`ali`表示阿里的ACR仓库，`docker`表示docker hub仓库，`all`两者都推送。文章中值教了大家配置ACR仓库，所以这里的值为默认。  
 ![ci](/assets/img/github-cicd-to-ack/github-ci-21.png)  
@@ -250,24 +250,24 @@ SVC_TYPE=NodePort
 ![ci](/assets/img/github-cicd-to-ack/github-ci-24.png)  
 修改完毕后的配置文件如下，这分配置文件仅适用于我
 ```env
-# The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
+   # The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
 PUSH_REGISTRY_KIND=ali
 
-# Aliyun ACK config
+   # Aliyun ACK config
 REGION_ID=cn-hongkong
 REGISTRY=cn-hongkong.personal.cr.aliyuncs.com
 NAMESPACE=github-demo2048
 IMAGE=demo2048
 INSTANCE_ID=crpi-qzutnfmw3xwy9c53
 
-# Docker Hub config (If you want to use this configuration, you need to modify the value of "PUSH_REGISTRY_KIND")
+   # Docker Hub config (If you want to use this configuration, you need to modify the value of "PUSH_REGISTRY_KIND")
 DOCKER_NAMESPACE=NULL  #Your Docker Hub ID
 DOCKER_REGISTRY_NAME=NULL  #Your Docker Hub repository name
 
-# cluster config
+   # cluster config
 ACK_CLUSTER_ID=c5422b77ef09449a4963d266a3be81202
 
-# application config
+   # application config
 ACK_NAMESPACE=default
 ACK_DEPLOYMENT_NAME=demo2048
 APP_NAME=demo2048
@@ -275,7 +275,7 @@ REPLICAS=1
 CONTAINER_NAME=demo2048
 CONTAINER_PORT=80
 
-# svc config
+   # svc config
 SVC_NAME=demo2048-svc
 SVC_PROTOCOL=TCP
 SVC_PORT=80
@@ -283,7 +283,7 @@ SVC_TARGET_PORT=80
 SVC_NODE_PORT=30080  #This parameter may not take effect.
 SVC_TYPE=NodePort
 
-# Ingress config
+   # Ingress config
 ```
 
 ## 开始构建
@@ -293,21 +293,21 @@ SVC_TYPE=NodePort
    ![ci](/assets/img/github-cicd-to-ack/github-ci-26.png)  
 2. 点击上面的`Code`,点击`.github/workflows`文件夹  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-27.png)  
-   然后点击`.env`文件
+   然后点击`.env`文件  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-28.png)  
-3. 点击右上角的编辑
+3. 点击右上角的编辑  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-29.png)  
-4. 将修改好的内容张贴上去
+4. 将修改好的内容张贴上去  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-30-1.png)  
-5. `commit change`提交更改
+5. `commit change`提交更改  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-30.png)  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-31.png)  
 6. 提交完成后流水线会开始自动构建  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-32.png)  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-33.png)  
-7. 点击流水线可以查构建的详细情况
+7. 点击流水线可以查构建的详细情况  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-34.png)  
-8. 如果你参数都没用配置错误的话结果会和下图一致【如果提示构建失败那么一定就是你参数问题，将后面流水线脚步解析】
+8. 如果你参数都没用配置错误的话结果会和下图一致【如果提示构建失败那么一定就是你参数问题，将后面流水线脚步解析】  
    ![ci](/assets/img/github-cicd-to-ack/github-ci-35.png)  
 
 ## 访问项目
@@ -325,13 +325,13 @@ SVC_TYPE=NodePort
    **需要注意一定要在pod运行的节点上进行安全配置，如果你的pod运行在.52的主机上，但是你配置的是.9的主机那么你也是无法访问的**  
 3. 点击进入节点主机后会看到下面内容，点击`安全组`  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-34.png)  
-   点击规则管理
+   点击规则管理  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-35.png)  
-   添加规则
+   添加规则  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-36.png)  
-   配置如下
+   配置如下  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-37.png)  
-4. 查看公网IP
+4. 查看公网IP  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-38.png)  
    使用公网IP+端口进行访问  
    ![ACK](/assets/img/github-cicd-to-ack/ACK-39.png)  
@@ -352,7 +352,7 @@ SVC_TYPE=NodePort
    ![ACK](/assets/img/github-cicd-to-ack/dep7.png)  
 
 # 流水线详解和故障排除
-下面是一整套流水线脚本
+下面是一整套流水线脚本  
 ```yaml
 name: Build and Deploy to ACK
 
@@ -487,7 +487,7 @@ jobs:
 点击这里可以查看构建的详细过程。  
 ![error](/assets/img/github-cicd-to-ack/err-1.png)  
 ![error](/assets/img/github-cicd-to-ack/err-2.png)  
-这里没一个折叠都是一个任务。  
+这里每一个折叠都是一个任务。  
 ![error](/assets/img/github-cicd-to-ack/err-3.png)  
 如果发生了错误那么前面的点点应该是红色的，而不是灰色的。  
 ![error](/assets/img/github-cicd-to-ack/err-4.png)  
