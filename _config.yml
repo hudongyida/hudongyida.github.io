@@ -10,6 +10,10 @@ highlighter: rouge
 # _config.yml
 plugins:
   - jekyll-feed
+
+feed:
+  path: "feed.xml"
+
 paginate: 10
 
 navigation:

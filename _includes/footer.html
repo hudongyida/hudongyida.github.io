@@ -1,7 +1,7 @@
 <div class="footer">
    <div class="container">
       <p class="copy">&copy; 2025-{{ site.time | date: '%Y' }}
-            <a href="https://xiaoshae.github.io/about">hudong</a><!--, Powered by
+            <a href="https://hudongyida.github.io/about">hudong</a><!--, Powered by
 
       
             <a href="http://jekyllrb.com">Jekyll</a>, customized
@@ -41,6 +41,14 @@
                   </svg>
             </a></li>
             {% endif %} 
+            
+            <li><a href="/feed.xml" title="订阅RSS">
+            <svg id="rss" class="custom-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" style="height: 30px; width: 30px;">
+               <circle class="outer-shape" cx="50" cy="50" r="48" style="opacity: 1;"></circle>
+               <path class="inner-shape" style="opacity: 1;" d="M25,35a5,5 0 1,0 10,0a5,5 0 1,0 -10,0 M25,65c-11,0 -20,9 -20,20h10c0,-5.5 4.5,-10 10,-10V65z M25,45c-16.5,0 -30,13.5 -30,30h10c0,-11 9,-20 20,-20V45z"></path>
+            </svg>
+      </a></li>
+
             {% if site.social.email %}
             <li><a href="mailto:{{ site.social.email }}">
                   <svg id="mail" class="custom-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" style="height: 30px; width: 30px;"><circle class="outer-shape" cx="50" cy="50" r="48" style="opacity: 1;"></circle>
