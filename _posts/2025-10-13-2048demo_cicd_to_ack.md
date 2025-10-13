@@ -198,7 +198,8 @@ categories: k8s
 - DOCKER_PASSWORD: 登入docker仓库的密码。  
 ### .env变量文件配置
 这是基础默认的配置文件。  
-```env
+  
+```
    # The repository category for pushing images, ali ACK 'ali', docker hub 'docker', ali ACK and docker hub 'all'
 PUSH_REGISTRY_KIND=ali
 
@@ -234,6 +235,7 @@ SVC_TYPE=NodePort
 
    # Ingress config
 ```
+  
 - PUSH_REGISTRY_KIND：表示你需要将构建出来的镜像推送到哪个仓库，`ali`表示阿里的ACR仓库，`docker`表示docker hub仓库，`all`两者都推送。文章中值教了大家配置ACR仓库，所以这里的值为默认。  
 ![ci](/assets/img/github-cicd-to-ack/github-ci-21.png)  
 - REGION_ID: 表示仓库所在区域ID，默认值是中国杭州`cn-hangzhou`。我配置的仓库区域在中国香港，所以我的值是`cn-hongkong`  
