@@ -2,7 +2,7 @@
 layout    : post
 title     : "使用Github Action cicd到阿里云ACK集群"
 date      : 2025-10-13
-lastupdate: 2025-10-13
+lastupdate: 2025-10-14
 categories: k8s 
 ---
 # 项目介绍
@@ -244,7 +244,7 @@ SVC_TYPE=NodePort
 - NAMESPACE: 名称空间我这里的值是`github-demo2048`  
 ![ci](/assets/img/github-cicd-to-ack/github-ci-23.png)  
 - IMAGE： 名称空间下的仓库命令我这里的是是`demo2048`
-- INSTANCE_ID： 示例ID我这里的ID是`crpi-qzutnfmw3xwy9c53`  
+- INSTANCE_ID： 示例ID我这里的ID是`crpi-*************`  
 ![ci](/assets/img/github-cicd-to-ack/github-ci-21.png)  
 - DOCKER_NAMESPACE: 不考虑，因为我们不推送到docker hub仓库，值默认即可
 - DOCKER_REGISTRY_NAME: 不考虑，同理，默认
@@ -261,7 +261,7 @@ REGION_ID=cn-hongkong
 REGISTRY=cn-hongkong.personal.cr.aliyuncs.com
 NAMESPACE=github-demo2048
 IMAGE=demo2048
-INSTANCE_ID=crpi-qzutnfmw3xwy9c53
+INSTANCE_ID=crpi-**************
 
    # Docker Hub config (If you want to use this configuration, you need to modify the value of "PUSH_REGISTRY_KIND")
 DOCKER_NAMESPACE=NULL  #Your Docker Hub ID
