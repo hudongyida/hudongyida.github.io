@@ -219,7 +219,7 @@ jenkins-agent   ClusterIP   10.68.100.20   <none>        50000/TCP        15m
 [root@master jenkins]# 
 ```
 
- ![](/assets/img/attachments/409704ac-109f-47da-b051-3e08900ee7c3.png " =2559x1380")查看密码,登入用户`**admin**`
+ ![](/assets/img/attachments/409704ac-109f-47da-b051-3e08900ee7c3.png " =2559x1380")查看密码,登入用户**`admin`**
 
 ```bash
 jsonpath="{.data.jenkins-admin-password}"
